@@ -10,6 +10,7 @@ app.set('view engine' , 'ejs');
 var lists = [];
 
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(express.static("public"));
 
 app.get("/" , function (req , res) {
     var today = new Date();
