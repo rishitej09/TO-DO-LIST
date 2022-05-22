@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- title -->
+    <title>To Do List</title>
+
+</head>
+<body>
+    <!-- heading  -->
+    <div class="heading">
+        <h1><%= currentDay %> </h1>
+    </div>
+    <!-- form  -->
+    <div class="form">
+        <!-- input  -->
+        <div class="input">
+            <form action="/" method="post">
+                <input type="text" name="list" placeholder="Drop Text Here !">
+                <button type="submit">ADD</button>
+            </form>
+        </div>
+    </div>
+    <div class="list">
+        <ul>
+            <% for (i=0;i<toDoList.length ; i++){ %>
+                <li>
+                    <%= toDoList[i] %>
+                </li>
+                <% }; %>
+        </ul>
+    </div>
+</body>
+<footer>
+    <!-- footer  -->
+    <div class="footer">
+        <h3>&copy; RT09 </h3>
+    </div>
+</footer>
+</html>
