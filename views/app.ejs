@@ -18,16 +18,19 @@
     <div class="box" id="heading">
         <h1><%= currentDay %> </h1>
     </div>
-    
+
+
     <div class="box">
-        <% for (i=0;i<toDoList.length ; i++){ %>
-            <div class="item">
-                <input type="checkbox">
-                <p>
-                    <%= toDoList[i] %>
-                </p>
-            </div>
-        <% }; %>
+       <%  toDoList.forEach(function(item){ %> 
+            <form action="/delete" method="post">
+                <div class="item">
+                    <input type="checkbox" value="<%= item._id  %> " name="checkbox" onchange="this.form.submit()">
+                    <p>
+                        <%= item.name %>
+                    </p>
+                </div>
+            </form>
+        <% }); %> 
     </div>
 
     <form action="/" method="post" class="box">

@@ -3,33 +3,83 @@
 const express = require ( "express" ) ; 
 const bodyParser = require ( "body-parser" ) ;
 const ejs = require("ejs");
+const mongoose = require('mongoose');
+
 
 const app = express();
 app.set('view engine' , 'ejs');
 
-var lists = [];
+mongoose.connect('mongodb://127.0.0.1:27017/todolistDB',{useNewUrlParser:true});
+
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
 
-app.get("/" , function (req , res) {
-    var today = new Date();
-    var options = {
-        weekday:"long",
-        day:"numeric",          //creating format
-        month:"long"
-    }
+const itemsSchema = {
+    name : String
+};
 
-    var presentDay = today.toLocaleDateString("en-US", options); // Saturday, September 17, 2016
+const Item = mongoose.model('Item',itemsSchema);
+
+const item1 = new Item ({
+    name: 'Welcome to your Todolist !'
+});
+
+const item2 = new Item ({
+    name: 'Hit + button to Add !'
+});
+
+const item3 = new Item ({
+    name: '<-- Hit Delete Button To Del !'
+});
+
+const defaultItems = [ item1 , item2 , item3];
+
+
+app.get("/" , function (req , res) {
     
-    res.render("app" , {currentDay:presentDay , toDoList:lists });
+    Item.find({},function(err,foundItems){
+        if(foundItems.length === 0){
+            Item.insertMany(defaultItems,function(err){
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log('Successfuly Data Added To DB');
+                }
+            });
+            res.redirect('/');
+        }else{
+    res.render("app" , {currentDay:'Today' , toDoList:foundItems });
+        };
+ });
 });
 
 app.post("/" , function (req , res) {
-    var input = req.body.list;
-    lists.push(input);
+    const itemName = req.body.list;
+    const item = new Item({
+      name : itemName  
+    });
+
+    item.save();
+
     res.redirect("/");
 });
+
+app.post("/delete",function(req,res){
+    const checkedItemId = req.body.checkbox ;
+    const checkedItemId1 = checkedItemId.trim();
+    
+    Item.findByIdAndRemove( checkedItemId1 ,function(err){
+        if (err){
+            console.log(err);
+        }else{
+            console.log('successfully deleted the checked item');
+            res.redirect("/");
+        }
+    });
+});
+
+
 
 
 app.listen ( 3000 , function ( req , res ) {
