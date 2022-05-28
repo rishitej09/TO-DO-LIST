@@ -1,25 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- viewport -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- favicon -->
-    <link rel="favicon" href="images/List.png" type="image/x-icon">
-    <!-- custom css -->
-    <link rel="stylesheet" href="css/styles.css">
-    <!-- title -->
-    <title>To Do List</title>
-
-</head>
-<body>
+<%- include("header") %> 
+    
     <!-- heading  -->
     <div class="box" id="heading">
         <h1><%= listTitle %> </h1>
     </div>
 
-
+    <!-- Form For Delete  -->
     <div class="box">
        <%  toDoList.forEach(function(item){ %> 
             <form action="/delete" method="post">
@@ -29,20 +15,15 @@
                         <%= item.name %>
                     </p>
                 </div>
+                <input type="hidden" name="listName" value="<%= listTitle %>"></input>
             </form>
         <% }); %> 
     </div>
 
+    <!-- Form For Input  -->
     <form action="/" method="post" class="box">
         <input type="text" name="newItem" placeholder="Drop Text Here !" autocomplete="off">
         <button type="submit" name="list" value="<%=listTitle%>">+</button>
     </form>
         
-</body>
-<footer>
-    <!-- footer  -->
-    <div class="footer">
-        <h3>&copy; RT09 </h3>
-    </div>
-</footer>
-</html>
+<%- include("footer") %> 
